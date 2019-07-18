@@ -7,16 +7,11 @@
 //
 
 import UIKit
+import Firebase
+import GoogleMaps
 
-class CustomNavigationController: UINavigationController {
-//    override var preferredStatusBarStyle: UIStatusBarStyle {
-//        return .
-//    }
-//    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
-//        return .fade
-//    }
-}
 
+let googleAPIKey = "<Google-Maps-Api-Key>"
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -26,9 +21,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
+        FirebaseApp.configure()
+        GMSServices.provideAPIKey(googleAPIKey)
+        
         window = UIWindow()
         window?.makeKeyAndVisible()
-        window?.backgroundColor = .red
+        window?.backgroundColor = .black
         window?.rootViewController =  HomeController()
         
         return true

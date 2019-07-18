@@ -19,4 +19,6 @@ class SearchView: UIView {
     func setupView() {
     
     }
+    
+    
 }

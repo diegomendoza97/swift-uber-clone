@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		2644B1EB22DCF1F70061B8EE /* MenuSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2644B1EA22DCF1F70061B8EE /* MenuSlider.swift */; };
+		2655DF2C22DE21BA0093255A /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2655DF2B22DE21BA0093255A /* LoginVC.swift */; };
+		2655DF2E22DE66720093255A /* RoundedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2655DF2D22DE66720093255A /* RoundedTextField.swift */; };
+		2687C53622E105F00030091F /* UpdateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2687C53522E105F00030091F /* UpdateService.swift */; };
+		269F449E22DF8BCE00B31483 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 269F449D22DF8BCE00B31483 /* GoogleService-Info.plist */; };
+		269F44A122DF973E00B31483 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269F44A022DF973E00B31483 /* DataService.swift */; };
+		269F44A322DFA0F100B31483 /* dark-theme.json in Resources */ = {isa = PBXBuildFile; fileRef = 269F44A222DFA0F100B31483 /* dark-theme.json */; };
+		269F44A522DFAB5300B31483 /* AnimatedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 269F44A422DFAB5300B31483 /* AnimatedButton.swift */; };
 		26A07A2122D4FBA90078FEAB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A07A2022D4FBA90078FEAB /* AppDelegate.swift */; };
 		26A07A2322D4FBA90078FEAB /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A07A2222D4FBA90078FEAB /* HomeController.swift */; };
 		26A07A2622D4FBA90078FEAB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26A07A2422D4FBA90078FEAB /* Main.storyboard */; };
@@ -20,6 +27,13 @@
 
 /* Begin PBXFileReference section */
 		2644B1EA22DCF1F70061B8EE /* MenuSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuSlider.swift; sourceTree = "<group>"; };
+		2655DF2B22DE21BA0093255A /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		2655DF2D22DE66720093255A /* RoundedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedTextField.swift; sourceTree = "<group>"; };
+		2687C53522E105F00030091F /* UpdateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateService.swift; sourceTree = "<group>"; };
+		269F449D22DF8BCE00B31483 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		269F44A022DF973E00B31483 /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
+		269F44A222DFA0F100B31483 /* dark-theme.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "dark-theme.json"; sourceTree = "<group>"; };
+		269F44A422DFAB5300B31483 /* AnimatedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedButton.swift; sourceTree = "<group>"; };
 		26A07A1D22D4FBA90078FEAB /* uber-clone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "uber-clone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		26A07A2022D4FBA90078FEAB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		26A07A2222D4FBA90078FEAB /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
@@ -46,6 +60,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2655DF2A22DE1CE40093255A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				2655DF2B22DE21BA0093255A /* LoginVC.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		269F449F22DF972A00B31483 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				269F44A022DF973E00B31483 /* DataService.swift */,
+				2687C53522E105F00030091F /* UpdateService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		26A07A1422D4FBA90078FEAB = {
 			isa = PBXGroup;
 			children = (
@@ -67,6 +98,8 @@
 		26A07A1F22D4FBA90078FEAB /* uber-clone */ = {
 			isa = PBXGroup;
 			children = (
+				269F449F22DF972A00B31483 /* Services */,
+				2655DF2A22DE1CE40093255A /* Controller */,
 				26A07A3522D52B9F0078FEAB /* View */,
 				26A07A3222D4FF440078FEAB /* Helpers */,
 				26A07A2022D4FBA90078FEAB /* AppDelegate.swift */,
@@ -75,6 +108,8 @@
 				26A07A2722D4FBAA0078FEAB /* Assets.xcassets */,
 				26A07A2922D4FBAA0078FEAB /* LaunchScreen.storyboard */,
 				26A07A2C22D4FBAA0078FEAB /* Info.plist */,
+				269F449D22DF8BCE00B31483 /* GoogleService-Info.plist */,
+				269F44A222DFA0F100B31483 /* dark-theme.json */,
 			);
 			path = "uber-clone";
 			sourceTree = "<group>";
@@ -92,6 +127,8 @@
 			children = (
 				26A07A3722D52BC20078FEAB /* SearchView.swift */,
 				2644B1EA22DCF1F70061B8EE /* MenuSlider.swift */,
+				2655DF2D22DE66720093255A /* RoundedTextField.swift */,
+				269F44A422DFAB5300B31483 /* AnimatedButton.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -125,6 +162,7 @@
 				26A07A1A22D4FBA90078FEAB /* Frameworks */,
 				26A07A1B22D4FBA90078FEAB /* Resources */,
 				5E078C8E3152207C3F28D98C /* [CP] Embed Pods Frameworks */,
+				FBE110EBDEDE053EBD8177F9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -173,7 +211,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				269F44A322DFA0F100B31483 /* dark-theme.json in Resources */,
 				26A07A2B22D4FBAA0078FEAB /* LaunchScreen.storyboard in Resources */,
+				269F449E22DF8BCE00B31483 /* GoogleService-Info.plist in Resources */,
 				26A07A2822D4FBAA0078FEAB /* Assets.xcassets in Resources */,
 				26A07A2622D4FBA90078FEAB /* Main.storyboard in Resources */,
 			);
@@ -221,6 +261,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		FBE110EBDEDE053EBD8177F9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-uber-clone/Pods-uber-clone-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-uber-clone/Pods-uber-clone-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-uber-clone/Pods-uber-clone-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -230,7 +287,12 @@
 			files = (
 				26A07A3822D52BC20078FEAB /* SearchView.swift in Sources */,
 				26A07A2322D4FBA90078FEAB /* HomeController.swift in Sources */,
+				2655DF2C22DE21BA0093255A /* LoginVC.swift in Sources */,
 				2644B1EB22DCF1F70061B8EE /* MenuSlider.swift in Sources */,
+				2687C53622E105F00030091F /* UpdateService.swift in Sources */,
+				269F44A522DFAB5300B31483 /* AnimatedButton.swift in Sources */,
+				2655DF2E22DE66720093255A /* RoundedTextField.swift in Sources */,
+				269F44A122DF973E00B31483 /* DataService.swift in Sources */,
 				26A07A3422D4FF520078FEAB /* Extensions.swift in Sources */,
 				26A07A2122D4FBA90078FEAB /* AppDelegate.swift in Sources */,
 			);
@@ -386,7 +448,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mendoza.diego.uber-clone";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mendoza.diego.ubah;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -405,7 +467,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mendoza.diego.uber-clone";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mendoza.diego.ubah;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

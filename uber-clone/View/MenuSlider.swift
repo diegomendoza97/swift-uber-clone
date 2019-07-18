@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 
 
@@ -18,44 +19,75 @@ enum LabelsName: String {
 }
 
 
-class MenuSlider:  UIView, UICollectionViewDelegate  {
-    let width = ((UIApplication.shared.keyWindow?.frame.width)! / 4) * 3
+class MenuSlider:  UIScrollView  {
+    let width = (((UIApplication.shared.keyWindow?.frame.width)! / 4) * 3) - 30
     //    var backButton: UIButton?
     var userProfileImage: UIImageView?
     var profileName: UILabel?
+    var accountType: UILabel?
     var menuView: UIView?
     var windowFrame: CGRect?
+    var driverModeSwitch: UISwitch?
+    var signInButton: UIButton?
+    
     lazy var homeController = HomeController()
     
-    var  homeFaded: UIView = {
-        let view = UIView()
-        view.backgroundColor = .clear
-        view.isUserInteractionEnabled = true
-        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(slideOut)))
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.zPosition = 1
-        return view
-    }()
 
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         windowFrame = UIApplication.shared.keyWindow?.frame
         setupView()
+        observePassengersAndDrivers()
+        
+        
+        if Auth.auth().currentUser == nil {
+            profileName?.text = "No user is logged in"
+            accountType?.text = ""
+            driverModeSwitch?.isHidden = true
+            signInButton?.setTitle("Sign Up / Login", for: .normal)
+        } else {
+            self.profileName?.text = Auth.auth().currentUser?.email
+            signInButton?.setTitle("Sign Out", for: .normal)
+        }
     }
-   
     
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+//    deinit {
+//        homeController = nil
+//    }
+//    
+    func observePassengersAndDrivers() {
+        DataService.instance.REF_USERS.observeSingleEvent(of: .value, with: { (snapshot) in
+            if let snapshot = snapshot.children.allObjects as? [DataSnapshot]  {
+                for snap in snapshot {
+                    if snap.key == Auth.auth().currentUser?.uid {
+                        self.accountType?.text = "Passenger"
+                        self.profileName?.text = Auth.auth().currentUser?.email
+                        self.driverModeSwitch?.isHidden = true
+                        self.accountType?.isHidden = false
+                    }
+                }
+            }
+        })
+        DataService.instance.REF_DRIVERS.observeSingleEvent(of: .value, with: { (snapshot) in
+            if let snapshot = snapshot.children.allObjects as? [DataSnapshot]  {
+                for snap in snapshot {
+                    if snap.key == Auth.auth().currentUser?.uid {
+                        self.accountType?.text = "Driver"
+                        self.profileName?.text = Auth.auth().currentUser?.email
+                        self.driverModeSwitch?.isHidden = false
+                        self.accountType?.isHidden = false
+                        self.toggleDriverMode()
+                    }
+                }
+            }
+        })
     }
     
     
     func setupView() {
         print("Setup View")
         if let keyWindow = UIApplication.shared.keyWindow {
-            let widthIn4 = keyWindow.frame.width / 4
-            homeFaded.frame = CGRect(x:0 , y: 0, width: widthIn4, height: keyWindow.frame.height)
             
             windowFrame = keyWindow.frame
             menuView = UIView(frame: keyWindow.frame)
@@ -78,26 +110,7 @@ class MenuSlider:  UIView, UICollectionViewDelegate  {
 
             darkBackground.leftAnchor.constraint(equalTo: menuView!.leftAnchor, constant: 0).isActive = true
             darkBackground.rightAnchor.constraint(equalTo: menuView!.rightAnchor, constant: 0).isActive = true
-            
 
-            let originalImage = UIImage(named: "backIcon")
-            let backImage: UIImage = (originalImage?.withRenderingMode(.alwaysTemplate))!
-            let backButton: UIButton = {
-                let button = UIButton()
-                button.isUserInteractionEnabled = true
-                button.setImage(backImage, for: .normal)
-                button.tintColor = .white
-                button.translatesAutoresizingMaskIntoConstraints = false
-                return button
-            }()
-
-            backButton.addTarget(self, action: #selector(slideOut), for: .touchUpInside)
-
-            menuView?.addSubview(backButton)
-            backButton.rightAnchor.constraint(equalTo: menuView!.rightAnchor, constant: -16).isActive = true
-            backButton.topAnchor.constraint(equalTo: menuView!.topAnchor,constant: 40).isActive = true
-            backButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
-            backButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
 
             userProfileImage = {
                 let imageView = UIImageView()
@@ -118,20 +131,53 @@ class MenuSlider:  UIView, UICollectionViewDelegate  {
 
             profileName = {
                 let label = UILabel()
-                label.text = "Profile Name"
+                label.text = "User"
                 label.textAlignment = .right
-                label.textColor = .white
-                label.font = UIFont.systemFont(ofSize: 25, weight: .bold)
+                label.textColor = UIColor.init(white: 1, alpha: 0.5)
+                label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
                 label.translatesAutoresizingMaskIntoConstraints = false
                 label.sizeToFit()
                 return label
             }()
+            
 
             menuView?.addSubview(profileName!)
 
             profileName?.leftAnchor.constraint(equalTo: userProfileImage!.leftAnchor, constant: 70).isActive = true
-            profileName?.topAnchor.constraint(equalTo: menuView!.topAnchor, constant: 60).isActive = true
-
+            profileName?.topAnchor.constraint(equalTo: menuView!.topAnchor, constant: 70).isActive = true
+            
+            
+            accountType = {
+                let label = UILabel()
+                label.text = "Driver"
+                label.textAlignment = .right
+                label.textColor = UIColor.init(white: 1, alpha: 0.5)
+                label.font = UIFont.systemFont(ofSize: 11, weight: .bold)
+                label.translatesAutoresizingMaskIntoConstraints = false
+                label.isHidden = true
+                label.sizeToFit()
+                return label
+            }()
+            
+            menuView!.addSubview(accountType!)
+            accountType?.leftAnchor.constraint(equalTo: userProfileImage!.leftAnchor, constant: 70).isActive = true
+            accountType?.topAnchor.constraint(equalTo: profileName!.bottomAnchor, constant: 16).isActive = true
+            
+            
+            driverModeSwitch =  {
+                let swtch = UISwitch()
+                swtch.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+                swtch.translatesAutoresizingMaskIntoConstraints = false
+                swtch.clipsToBounds = true
+                swtch.isOn = false
+                swtch.isHidden = true
+                swtch.addTarget(self, action: #selector(toggleDriverMode), for: .valueChanged)
+                return swtch
+            }()
+            
+            menuView?.addSubview(driverModeSwitch!)
+            driverModeSwitch?.rightAnchor.constraint(equalTo: menuView!.rightAnchor, constant: -32).isActive = true
+            driverModeSwitch?.topAnchor.constraint(equalTo: profileName!.bottomAnchor, constant: 16).isActive = true
 
             let paymentlabel: UILabel = {
                 let label = UILabel()
@@ -193,50 +239,72 @@ class MenuSlider:  UIView, UICollectionViewDelegate  {
             settingsLabel.leftAnchor.constraint(equalTo: menuView!.leftAnchor, constant: 16).isActive = true
             
             
-            let signInButton: UIButton = {
+            signInButton = {
                 let button = UIButton()
                 button.setTitle("Sign In / Sign Up", for: .normal)
                 button.translatesAutoresizingMaskIntoConstraints = false
                 button.titleLabel?.font = UIFont.systemFont(ofSize: 24, weight: .bold)
                 button.setTitleColor(.black, for: .normal)
-                button.addTarget(self, action: #selector(printFuck), for: .touchUpInside)
+                button.addTarget(self, action: #selector(launchLogin), for: .touchUpInside)
                 return button
             }()
             
-            menuView?.addSubview(signInButton)
-            signInButton.widthAnchor.constraint(equalToConstant: (menuView?.frame.width)!);
-//            signInButton.widthAnchor.constraint(equalToConstant: menuView?.frame.width);
-            signInButton.bottomAnchor.constraint(equalTo: menuView!.bottomAnchor, constant: -40).isActive = true
-            signInButton.leftAnchor.constraint(equalTo: menuView!.leftAnchor, constant: 24).isActive = true
+            menuView?.addSubview(signInButton!)
+            signInButton!.widthAnchor.constraint(equalToConstant: (menuView?.frame.width)!);
+            signInButton!.bottomAnchor.constraint(equalTo: menuView!.bottomAnchor, constant: -40).isActive = true
+            signInButton!.leftAnchor.constraint(equalTo: menuView!.leftAnchor, constant: 24).isActive = true
         }
         
     }
     
-    @objc func printFuck() {
-        print("FUUUCK" )
+    @objc func toggleDriverMode () {
+        print("toggle")
+        let uid = Auth.auth().currentUser?.uid
+        if driverModeSwitch!.isOn {
+            DataService.instance.REF_DRIVERS.child(uid!).updateChildValues(["isPickupEnabled": true])
+        } else {
+            DataService.instance.REF_DRIVERS.child(uid!).updateChildValues(["isPickupEnabled": false])
+        }
+    }
+    
+    @objc func launchLogin() {
+        if let rootController = UIApplication.shared.keyWindow?.rootViewController {
+            slideOut()
+            let loginVC = LoginVC()
+            rootController.present(loginVC, animated: true) {
+                if Auth.auth().currentUser != nil {
+                    do {
+                       try  Auth.auth().signOut()
+                    } catch {
+                        print("Could not sign you out")
+                    }
+                }
+            }
+        }
+        
     }
     
     func slideIn() {
-        homeFaded.isHidden = true
         menuView?.superview?.bringSubviewToFront(menuView!)
         UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
             let newFrame = CGRect(x: 0, y: 0, width: self.width, height: self.windowFrame!.height)
             self.menuView?.frame = newFrame
         }) { (completed) in }
-        
     }
     
     
-    @objc func slideOut() {
+    
+    func slideOut() {
         print("SLIDE OUT")
-        homeFaded.isHidden = false
         UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
             let newFrame = CGRect(x: -self.width, y: 0, width: self.menuView!.frame.width, height: self.windowFrame!.height)
             self.menuView?.frame = newFrame
-        }) { (completed) in
-            self.homeFaded.removeFromSuperview()
-            
-        }
+        }) { (completed) in}
+    }
+    
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
